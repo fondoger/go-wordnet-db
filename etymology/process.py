@@ -86,13 +86,18 @@ def filter_eng_eng_etymology():
             if row['reltype'] == 'blend_of':
                 # 不直观
                 continue
+            if row['reltype'] == 'has_affix':
+                # 剔除不包含完整词根的词(不够直观)
+                if row['related_term'] not in row['term']:
+                    continue
 
             row['term'] = stripword(row['term'])
             row['related_term'] = stripword(row['related_term'])
             rows.append(row)
             terms[row['related_term']] = terms.get(row['related_term'], 0) + 1
     
-    
+    # Sort rows by term
+    rows = sorted(rows, key=lambda x: x['term'])
 
     results = {}
     reltypes = {}
