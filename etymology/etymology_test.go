@@ -14,4 +14,7 @@ func TestEtymology(t *testing.T) {
 	if EtymologyStripped["unhappy"] != "happy" {
 		t.Error("Expected happy, got", EtymologyStripped["unhappy"])
 	}
+	if EtymologyStripped["animalism"] != "animal" {
+		t.Error("Expected animal, got", EtymologyStripped["animalism"])
+	}
 }
