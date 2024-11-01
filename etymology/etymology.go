@@ -14,7 +14,7 @@ import (
 var rawData []byte
 
 // Key: Stripped Word
-// Value: RelationType(0X) + Target Word
+// Value: Target Word
 var EtymologyStripped map[string]string
 
 const (
@@ -74,10 +74,17 @@ func init() {
 		typ, ok := relTypeMapping[reltype]
 		if !ok {
 			log.Fatalf("Invalid relation type: %s", reltype)
-
 		}
-		EtymologyStripped[word] = typ + target
+		_ = typ
+		EtymologyStripped[word] = pickLong(EtymologyStripped[word], target)
 
 		line, _, err = reader.ReadLine()
 	}
+}
+
+func pickLong(a, b string) string {
+	if len(a) > len(b) {
+		return a
+	}
+	return b
 }
