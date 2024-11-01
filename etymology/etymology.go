@@ -13,7 +13,9 @@ import (
 //go:embed etymology-en.csv
 var rawData []byte
 
-var Etymology map[string]string
+// Key: Stripped Word
+// Value: RelationType(0X) + Target Word
+var EtymologyStripped map[string]string
 
 const (
 	RelTypeHasSuffix         = 0
@@ -52,7 +54,7 @@ var relTypeMapping = map[string]string{
 }
 
 func init() {
-	Etymology = make(map[string]string)
+	EtymologyStripped = make(map[string]string)
 
 	reader := bufio.NewReader(bytes.NewReader(rawData))
 
@@ -74,7 +76,7 @@ func init() {
 			log.Fatalf("Invalid relation type: %s", reltype)
 
 		}
-		Etymology[word] = typ + target
+		EtymologyStripped[word] = typ + target
 
 		line, _, err = reader.ReadLine()
 	}

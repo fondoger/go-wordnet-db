@@ -11,11 +11,15 @@ import csv
 # Filter: lang==English,related_lang==English
 # Returns { term, related_term, reltype }
 
+
+def stripword(word):
+    return (''.join([ n for n in word if n.isalnum() ])).lower()
+
 coca6000 = set()
 with open('../coca60000/coca60000-rank.txt', mode='r', encoding='utf-8') as file:
     for line in file:
         word = line.split('|')[0]
-        coca6000.add(word)
+        coca6000.add(stripword(word))
 
 def filter_eng_eng_etymology():
     results = []
@@ -31,6 +35,8 @@ def filter_eng_eng_etymology():
                 continue
             if row['term'] == row['related_term']:
                 continue
+            row['term'] = stripword(row['term'])
+            row['related_term'] = stripword(row['related_term'])
             if row['term'] not in coca6000 or row['related_term'] not in coca6000:
                 continue
             results.append(row)

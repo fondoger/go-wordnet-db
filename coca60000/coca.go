@@ -4,15 +4,17 @@ import (
 	_ "embed"
 	"strconv"
 	"strings"
+
+	"github.com/fondoger/go-wordnet-db/util"
 )
 
 //go:embed coca60000-rank.txt
 var rawData string
 
-var Coca60000 map[string]int
+var Coca60000Stripped map[string]int
 
 func init() {
-	Coca60000 = make(map[string]int)
+	Coca60000Stripped = make(map[string]int)
 
 	lines := strings.Split(rawData, "\n")
 	for _, line := range lines {
@@ -20,8 +22,8 @@ func init() {
 			continue
 		}
 		parts := strings.Split(line, "|")
-		word := parts[0]
+		word := util.GetStripWord(parts[0])
 		rank, _ := strconv.Atoi(parts[1])
-		Coca60000[word] = rank
+		Coca60000Stripped[word] = rank
 	}
 }
