@@ -69,22 +69,13 @@ func init() {
 			log.Fatalf("Invalid line: %s", line)
 		}
 		word := parts[0]
-		reltype := parts[1]
+		// reltype := parts[1]
 		target := parts[2]
-		typ, ok := relTypeMapping[reltype]
-		if !ok {
-			log.Fatalf("Invalid relation type: %s", reltype)
+		if _, ok := EtymologyStripped[word]; ok {
+			log.Fatalf("Duplicate word: %s", word)
 		}
-		_ = typ
-		EtymologyStripped[word] = pickLong(EtymologyStripped[word], target)
+		EtymologyStripped[word] = target
 
 		line, _, err = reader.ReadLine()
 	}
-}
-
-func pickLong(a, b string) string {
-	if len(a) > len(b) {
-		return a
-	}
-	return b
 }
